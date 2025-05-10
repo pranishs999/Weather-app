@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Weather App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="w-full max-w-lg p-6 bg-white rounded-lg shadow-lg">
+    <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">🌦 Weather App</h2>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label for="city" class="block mb-2 text-sm font-medium text-gray-700">Enter City</label>
+        <input 
+          type="text" 
+          id="city" 
+          name="city" 
+          required 
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" 
+          placeholder="e.g., London">
+      </div>
+      <button 
+        type="submit"
+        class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+        Get Weather
+      </button>
+    </form>
+
+    {% if data.city %}
+    <div class="mt-6">
+      <div class="p-4 border border-gray-200 rounded-lg bg-blue-50">
+        <h3 class="text-lg font-semibold text-blue-800 mb-2">Weather for {{ data.city }}</h3>
+        <ul class="text-sm text-blue-900 space-y-1">
+          <li><strong>Country:</strong> {{ data.country_code }}</li>
+          <li><strong>Coordinates:</strong> {{ data.coordinate }}</li>
+          <li><strong>Temperature:</strong> {{ data.temp }}</li>
+          <li><strong>Pressure:</strong> {{ data.pressure }} hPa</li>
+          <li><strong>Humidity:</strong> {{ data.humidity }}%</li>
+        </ul>
+      </div>
+    </div>
+    {% elif data.error %}
+    <div class="mt-6 flex items-center p-4 text-red-800 border border-red-300 rounded-lg bg-red-50" role="alert">
+      <svg class="flex-shrink-0 w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+           fill="currentColor" viewBox="0 0 20 20">
+        <path d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0ZM9 7a1 1 0 0 1 2 0v3a1 1 0 0 1-2 0V7Zm1 8a1 1 0 1 1 0-2 1 1 0 0 1 0 2Z"/>
+      </svg>
+      <span class="sr-only">Info</span>
+      <div class="ms-2 text-sm font-medium">{{ data.error }}</div>
+    </div>
+    {% endif %}
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+</body>
+</html>
